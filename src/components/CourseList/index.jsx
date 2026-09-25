@@ -4,6 +4,7 @@ import {
     createCourse,
 } from '../../services/courseService'
 import TimetableList from '../TimetableList'
+import AssignmentList from '../AssignmentList'
 
 function CourseList({ semesterId }) {
     const [courses, setCourses] = useState([])
@@ -133,9 +134,15 @@ function CourseList({ semesterId }) {
                     </div>
 
                     {selectedCourseId && (
-                        <TimetableList
-                            courseId={Number(selectedCourseId)}
-                        />
+                        <>
+                            <TimetableList
+                                courseId={Number(selectedCourseId)}
+                            />
+
+                            <AssignmentList
+                                courseId={Number(selectedCourseId)}
+                            />
+                        </>
                     )}
                 </>
             )}
