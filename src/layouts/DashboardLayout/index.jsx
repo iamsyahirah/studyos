@@ -1,6 +1,13 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 function DashboardLayout() {
+    const { signOut } = useAuth()
+
+    async function handleLogout() {
+        await signOut()
+    }
+
     return (
         <div className="app-layout">
             <aside className="sidebar">
@@ -16,6 +23,10 @@ function DashboardLayout() {
                     <NavLink to="/tasks">Tasks</NavLink>
                     <NavLink to="/groups">Groups</NavLink>
                 </nav>
+
+                <button onClick={handleLogout}>
+                    Logout
+                </button>
             </aside>
 
             <main className="main-content">
