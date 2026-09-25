@@ -3,12 +3,17 @@ import {
     getSemesters,
     createSemester,
 } from '../../services/semesterService'
+import CourseList from '../CourseList'
 
 function SemesterList({ academicYearId }) {
     const [semesters, setSemesters] = useState([])
+
     const [name, setName] = useState('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
+
+    const [selectedSemesterId, setSelectedSemesterId] = useState('')
+
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
 
@@ -93,13 +98,40 @@ function SemesterList({ academicYearId }) {
             {semesters.length === 0 ? (
                 <p>No semesters yet.</p>
             ) : (
-                <ul>
-                    {semesters.map((semester) => (
-                        <li key={semester.id}>
-                            {semester.name}
-                        </li>
-                    ))}
-                </ul>
+                <>
+                    <div>
+                        <label htmlFor="semester">
+                            Select Semester
+                        </label>
+
+                        <select
+                            id="semester"
+                            value={selectedSemesterId}
+                            onChange={(event) =>
+                                setSelectedSemesterId(event.target.value)
+                            }
+                        >
+                            <option value="">
+                                Select semester
+                            </option>
+
+                            {semesters.map((semester) => (
+                                <option
+                                    key={semester.id}
+                                    value={semester.id}
+                                >
+                                    {semester.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {selectedSemesterId && (
+                        <CourseList
+                            semesterId={Number(selectedSemesterId)}
+                        />
+                    )}
+                </>
             )}
         </div>
     )
