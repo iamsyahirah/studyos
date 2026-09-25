@@ -5,6 +5,7 @@ export async function getTasks(courseId) {
     .from('tasks')
     .select('*')
     .eq('course_id', courseId)
+    .is('assignment_id', null)
     .order('due_date', { ascending: true })
 
   if (error) throw error
@@ -53,7 +54,8 @@ export async function createAssignmentTask(
   title,
   description,
   dueDate,
-  priority
+  priority,
+  assignedTo = null
 ) {
   const { data, error } = await supabase
     .from('tasks')
@@ -63,6 +65,7 @@ export async function createAssignmentTask(
       description: description || null,
       due_date: dueDate || null,
       priority: priority || 'medium',
+      assigned_to: assignedTo || null,
     })
     .select()
     .single()

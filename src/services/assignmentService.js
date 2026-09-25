@@ -17,7 +17,8 @@ export async function createAssignment(
   title,
   description,
   dueDate,
-  priority
+  priority,
+  groupId = null
 ) {
   const { data, error } = await supabase
     .from('assignments')
@@ -27,6 +28,7 @@ export async function createAssignment(
       description: description || null,
       due_date: dueDate || null,
       priority: priority || 'medium',
+      group_id: groupId || null,
     })
     .select()
     .single()

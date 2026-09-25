@@ -142,6 +142,7 @@ function CourseList({ semesterId }) {
 
                             <AssignmentList
                                 courseId={Number(selectedCourseId)}
+                                semesterId={semesterId}
                             />
 
                             <TaskList

@@ -3,6 +3,9 @@ import {
     getAssignments,
     createAssignment,
 } from '../../services/assignmentService'
+import {
+    getGroups,
+} from '../../services/groupService'
 import TaskList from '../TaskList'
 
 const priorities = [
@@ -11,25 +14,33 @@ const priorities = [
     { value: 'high', label: 'High' },
 ]
 
-function AssignmentList({ courseId }) {
+function AssignmentList({ courseId, semesterId }) {
     const [assignments, setAssignments] = useState([])
+    const [groups, setGroups] = useState([])
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [dueDate, setDueDate] = useState('')
     const [priority, setPriority] = useState('medium')
+    const [groupId, setGroupId] = useState('')
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        async function loadAssignments() {
+        async function loadData() {
             try {
                 setLoading(true)
                 setError('')
 
-                const data = await getAssignments(courseId)
-                setAssignments(data)
+                const [assignmentData, groupData] =
+                    await Promise.all([
+                        getAssignments(courseId),
+                        getGroups(semesterId),
+                    ])
+
+                setAssignments(assignmentData)
+                setGroups(groupData)
             } catch (error) {
                 setError(error.message)
             } finally {
@@ -37,15 +48,13 @@ function AssignmentList({ courseId }) {
             }
         }
 
-        loadAssignments()
-    }, [courseId])
+        loadData()
+    }, [courseId, semesterId])
 
     async function handleSubmit(event) {
         event.preventDefault()
 
-        if (!title.trim()) {
-            return
-        }
+        if (!title.trim()) return
 
         try {
             setError('')
@@ -55,7 +64,8 @@ function AssignmentList({ courseId }) {
                 title.trim(),
                 description.trim(),
                 dueDate,
-                priority
+                priority,
+                groupId ? Number(groupId) : null
             )
 
             setAssignments((current) => [
@@ -67,14 +77,13 @@ function AssignmentList({ courseId }) {
             setDescription('')
             setDueDate('')
             setPriority('medium')
+            setGroupId('')
         } catch (error) {
             setError(error.message)
         }
     }
 
-    if (loading) {
-        return <p>Loading assignments...</p>
-    }
+    if (loading) return <p>Loading assignments...</p>
 
     return (
         <div>
@@ -122,6 +131,26 @@ function AssignmentList({ courseId }) {
                     ))}
                 </select>
 
+                <select
+                    value={groupId}
+                    onChange={(event) =>
+                        setGroupId(event.target.value)
+                    }
+                >
+                    <option value="">
+                        Individual Assignment
+                    </option>
+
+                    {groups.map((group) => (
+                        <option
+                            key={group.id}
+                            value={group.id}
+                        >
+                            {group.name}
+                        </option>
+                    ))}
+                </select>
+
                 <button type="submit">
                     Add Assignment
                 </button>
@@ -152,10 +181,23 @@ function AssignmentList({ courseId }) {
                                     {' '}
                                     — Priority: {assignment.priority}
                                 </span>
+
+                                {assignment.group_id && (
+                                    <span>
+                                        {' '}
+                                        — Group:{' '}
+                                        {
+                                            groups.find(
+                                                (group) => group.id === assignment.group_id
+                                            )?.name
+                                        }
+                                    </span>
+                                )}
                             </div>
 
                             <TaskList
                                 assignmentId={assignment.id}
+                                groupId={assignment.group_id}
                             />
                         </li>
                     ))}

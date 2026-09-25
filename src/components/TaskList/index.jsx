@@ -6,7 +6,7 @@ import {
     createAssignmentTask,
     updateTaskStatus,
 } from '../../services/taskService'
-
+import { getGroups, getGroupMembers } from '../../services/groupService'
 
 const priorities = [
     { value: 'low', label: 'Low' },
@@ -14,28 +14,37 @@ const priorities = [
     { value: 'high', label: 'High' },
 ]
 
-function TaskList({ courseId, assignmentId }) {
+function TaskList({ courseId, assignmentId, groupId }) {
     const [tasks, setTasks] = useState([])
+    const [members, setMembers] = useState([])
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [dueDate, setDueDate] = useState('')
     const [priority, setPriority] = useState('medium')
+    const [assignedTo, setAssignedTo] = useState('')
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        async function loadTasks() {
+        async function loadData() {
             try {
                 setLoading(true)
                 setError('')
 
-                const data = assignmentId
+                const taskData = assignmentId
                     ? await getAssignmentTasks(assignmentId)
                     : await getTasks(courseId)
 
-                setTasks(data)
+                setTasks(taskData)
+
+                if (groupId) {
+                    const memberData = await getGroupMembers(groupId)
+                    setMembers(memberData)
+                } else {
+                    setMembers([])
+                }
             } catch (error) {
                 setError(error.message)
             } finally {
@@ -43,8 +52,8 @@ function TaskList({ courseId, assignmentId }) {
             }
         }
 
-        loadTasks()
-    }, [courseId, assignmentId])
+        loadData()
+    }, [courseId, assignmentId, groupId])
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -60,7 +69,10 @@ function TaskList({ courseId, assignmentId }) {
                     title.trim(),
                     description.trim(),
                     dueDate,
-                    priority
+                    priority,
+                    assignedTo
+                        ? Number(assignedTo)
+                        : null
                 )
                 : await createCourseTask(
                     courseId,
@@ -79,6 +91,7 @@ function TaskList({ courseId, assignmentId }) {
             setDescription('')
             setDueDate('')
             setPriority('medium')
+            setAssignedTo('')
         } catch (error) {
             setError(error.message)
         }
@@ -105,13 +118,17 @@ function TaskList({ courseId, assignmentId }) {
         }
     }
 
-    if (loading) return <p>Loading tasks...</p>
+    if (loading) {
+        return <p>Loading tasks...</p>
+    }
 
     return (
         <div>
-            <h3>
-                {assignmentId ? 'Assignment Tasks' : 'Course Tasks'}
-            </h3>
+            <h4>
+                {assignmentId
+                    ? 'Assignment Tasks'
+                    : 'Course Tasks'}
+            </h4>
 
             <form onSubmit={handleSubmit}>
                 <input
@@ -155,6 +172,28 @@ function TaskList({ courseId, assignmentId }) {
                     ))}
                 </select>
 
+                {assignmentId && groupId && (
+                    <select
+                        value={assignedTo}
+                        onChange={(event) =>
+                            setAssignedTo(event.target.value)
+                        }
+                    >
+                        <option value="">
+                            Unassigned
+                        </option>
+
+                        {members.map((member) => (
+                            <option
+                                key={member.id}
+                                value={member.id}
+                            >
+                                {member.name}
+                            </option>
+                        ))}
+                    </select>
+                )}
+
                 <button type="submit">
                     Add Task
                 </button>
@@ -166,44 +205,63 @@ function TaskList({ courseId, assignmentId }) {
                 <p>No tasks yet.</p>
             ) : (
                 <ul>
-                    {tasks.map((task) => (
-                        <li key={task.id}>
-                            <strong>{task.title}</strong>
+                    {tasks.map((task) => {
+                        const assignedMember = members.find(
+                            (member) =>
+                                member.id === task.assigned_to
+                        )
 
-                            {task.due_date && (
+                        return (
+                            <li key={task.id}>
+                                <strong>{task.title}</strong>
+
+                                {task.due_date && (
+                                    <span>
+                                        {' '}
+                                        — Due:{' '}
+                                        {new Date(
+                                            task.due_date
+                                        ).toLocaleString()}
+                                    </span>
+                                )}
+
                                 <span>
                                     {' '}
-                                    — Due:{' '}
-                                    {new Date(
-                                        task.due_date
-                                    ).toLocaleString()}
+                                    — Priority: {task.priority}
                                 </span>
-                            )}
 
-                            <span>
-                                {' '}
-                                — Priority: {task.priority}
-                            </span>
+                                {assignedMember && (
+                                    <span>
+                                        {' '}
+                                        — Assigned to:{' '}
+                                        {assignedMember.name}
+                                    </span>
+                                )}
 
-                            <select
-                                value={task.status}
-                                onChange={(event) =>
-                                    handleStatusChange(
-                                        task.id,
-                                        event.target.value
-                                    )
-                                }
-                            >
-                                <option value="todo">To Do</option>
-                                <option value="in_progress">
-                                    In Progress
-                                </option>
-                                <option value="completed">
-                                    Completed
-                                </option>
-                            </select>
-                        </li>
-                    ))}
+                                <select
+                                    value={task.status}
+                                    onChange={(event) =>
+                                        handleStatusChange(
+                                            task.id,
+                                            event.target.value
+                                        )
+                                    }
+                                >
+                                    <option value="todo">
+                                        To Do
+                                    </option>
+
+                                    <option value="in_progress">
+                                        In Progress
+                                    </option>
+
+                                    <option value="completed">
+                                        Completed
+                                    </option>
+                                </select>
+                            </li>
+                        )
+                    })}
                 </ul>
             )}
         </div>
