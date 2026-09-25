@@ -17,6 +17,7 @@ function DashboardLayout() {
 
                 <nav className="sidebar-nav">
                     <NavLink to="/dashboard">Dashboard</NavLink>
+                    <NavLink to="/academic-years">Academic Years</NavLink>
                     <NavLink to="/timetable">Timetable</NavLink>
                     <NavLink to="/courses">Courses</NavLink>
                     <NavLink to="/assignments">Assignments</NavLink>

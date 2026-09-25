@@ -4,12 +4,14 @@ import {
     getAcademicYears,
     createAcademicYear,
 } from '../../services/academicYearService'
+import SemesterList from '../SemesterList'
 
-function Courses() {
+function AcademicYearList() {
     const { user } = useAuth()
 
     const [academicYears, setAcademicYears] = useState([])
     const [name, setName] = useState('')
+    const [selectedAcademicYearId, setSelectedAcademicYearId] = useState('')
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
 
@@ -31,11 +33,11 @@ function Courses() {
     async function handleSubmit(event) {
         event.preventDefault()
 
-        if (!name.trim()) {
-            return
-        }
+        if (!name.trim()) return
 
         try {
+            setError('')
+
             const newAcademicYear = await createAcademicYear(
                 user.id,
                 name.trim()
@@ -58,8 +60,6 @@ function Courses() {
 
     return (
         <div>
-            <h1>Courses</h1>
-
             <h2>Academic Years</h2>
 
             <form onSubmit={handleSubmit}>
@@ -80,16 +80,43 @@ function Courses() {
             {academicYears.length === 0 ? (
                 <p>No academic years yet.</p>
             ) : (
-                <ul>
-                    {academicYears.map((year) => (
-                        <li key={year.id}>
-                            {year.name}
-                        </li>
-                    ))}
-                </ul>
+                <>
+                    <div>
+                        <label htmlFor="academic-year">
+                            Select Academic Year
+                        </label>
+
+                        <select
+                            id="academic-year"
+                            value={selectedAcademicYearId}
+                            onChange={(event) =>
+                                setSelectedAcademicYearId(event.target.value)
+                            }
+                        >
+                            <option value="">
+                                Select academic year
+                            </option>
+
+                            {academicYears.map((year) => (
+                                <option
+                                    key={year.id}
+                                    value={year.id}
+                                >
+                                    {year.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {selectedAcademicYearId && (
+                        <SemesterList
+                            academicYearId={Number(selectedAcademicYearId)}
+                        />
+                    )}
+                </>
             )}
         </div>
     )
 }
 
-export default Courses
+export default AcademicYearList

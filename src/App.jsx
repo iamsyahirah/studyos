@@ -7,11 +7,13 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 
 import Dashboard from './pages/Dashboard'
+import AcademicYears from './pages/AcademicYears'
 import Timetable from './pages/Timetable'
 import Courses from './pages/Courses'
 import Assignments from './pages/Assignments'
 import Tasks from './pages/Tasks'
 import Groups from './pages/Groups'
+
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/academic-years" element={<AcademicYears />} />
             <Route path="/timetable" element={<Timetable />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/assignments" element={<Assignments />} />
