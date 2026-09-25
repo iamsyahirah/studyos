@@ -3,6 +3,7 @@ import {
     getCourses,
     createCourse,
 } from '../../services/courseService'
+import TimetableList from '../TimetableList'
 
 function CourseList({ semesterId }) {
     const [courses, setCourses] = useState([])
@@ -10,6 +11,8 @@ function CourseList({ semesterId }) {
     const [code, setCode] = useState('')
     const [name, setName] = useState('')
     const [lecturerName, setLecturerName] = useState('')
+
+    const [selectedCourseId, setSelectedCourseId] = useState('')
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
@@ -101,17 +104,40 @@ function CourseList({ semesterId }) {
             {courses.length === 0 ? (
                 <p>No courses yet.</p>
             ) : (
-                <ul>
-                    {courses.map((course) => (
-                        <li key={course.id}>
-                            <strong>{course.code}</strong> — {course.name}
+                <>
+                    <div>
+                        <label htmlFor="course">
+                            Select Course
+                        </label>
 
-                            {course.lecturer_name && (
-                                <span> — {course.lecturer_name}</span>
-                            )}
-                        </li>
-                    ))}
-                </ul>
+                        <select
+                            id="course"
+                            value={selectedCourseId}
+                            onChange={(event) =>
+                                setSelectedCourseId(event.target.value)
+                            }
+                        >
+                            <option value="">
+                                Select course
+                            </option>
+
+                            {courses.map((course) => (
+                                <option
+                                    key={course.id}
+                                    value={course.id}
+                                >
+                                    {course.code} — {course.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {selectedCourseId && (
+                        <TimetableList
+                            courseId={Number(selectedCourseId)}
+                        />
+                    )}
+                </>
             )}
         </div>
     )
