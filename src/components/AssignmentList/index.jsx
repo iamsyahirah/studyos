@@ -3,6 +3,7 @@ import {
     getAssignments,
     createAssignment,
 } from '../../services/assignmentService'
+import TaskList from '../TaskList'
 
 const priorities = [
     { value: 'low', label: 'Low' },
@@ -134,22 +135,28 @@ function AssignmentList({ courseId }) {
                 <ul>
                     {assignments.map((assignment) => (
                         <li key={assignment.id}>
-                            <strong>{assignment.title}</strong>
+                            <div>
+                                <strong>{assignment.title}</strong>
 
-                            {assignment.due_date && (
+                                {assignment.due_date && (
+                                    <span>
+                                        {' '}
+                                        — Due:{' '}
+                                        {new Date(
+                                            assignment.due_date
+                                        ).toLocaleString()}
+                                    </span>
+                                )}
+
                                 <span>
                                     {' '}
-                                    — Due:{' '}
-                                    {new Date(
-                                        assignment.due_date
-                                    ).toLocaleString()}
+                                    — Priority: {assignment.priority}
                                 </span>
-                            )}
+                            </div>
 
-                            <span>
-                                {' '}
-                                — Priority: {assignment.priority}
-                            </span>
+                            <TaskList
+                                assignmentId={assignment.id}
+                            />
                         </li>
                     ))}
                 </ul>

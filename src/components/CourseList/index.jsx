@@ -5,6 +5,7 @@ import {
 } from '../../services/courseService'
 import TimetableList from '../TimetableList'
 import AssignmentList from '../AssignmentList'
+import TaskList from '../TaskList'
 
 function CourseList({ semesterId }) {
     const [courses, setCourses] = useState([])
@@ -140,6 +141,10 @@ function CourseList({ semesterId }) {
                             />
 
                             <AssignmentList
+                                courseId={Number(selectedCourseId)}
+                            />
+
+                            <TaskList
                                 courseId={Number(selectedCourseId)}
                             />
                         </>
