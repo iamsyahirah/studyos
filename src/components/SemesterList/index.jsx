@@ -4,6 +4,7 @@ import {
     createSemester,
 } from '../../services/semesterService'
 import CourseList from '../CourseList'
+import GroupList from '../GroupList'
 
 function SemesterList({ academicYearId }) {
     const [semesters, setSemesters] = useState([])
@@ -128,6 +129,11 @@ function SemesterList({ academicYearId }) {
 
                     {selectedSemesterId && (
                         <CourseList
+                            semesterId={Number(selectedSemesterId)}
+                        />
+                    )}
+                    {selectedSemesterId && (
+                        <GroupList
                             semesterId={Number(selectedSemesterId)}
                         />
                     )}
