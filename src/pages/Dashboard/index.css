@@ -1,0 +1,205 @@
+.dashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.dashboard-header p {
+  margin: 0;
+  color: #666;
+}
+
+.dashboard-section {
+  margin-bottom: 32px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-header h3 {
+  margin: 0;
+}
+
+.section-header span {
+  color: #777;
+  font-size: 14px;
+}
+
+.overview-grid,
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.overview-card,
+.task-card,
+.assignment-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 20px;
+  background: white;
+}
+
+.overview-card,
+.task-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.overview-card span,
+.task-card span {
+  color: #777;
+  font-size: 14px;
+}
+
+.overview-card strong,
+.task-card strong {
+  font-size: 28px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 80px 20px 1fr;
+  gap: 12px;
+  min-height: 90px;
+}
+
+.timeline-time {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+
+.timeline-time strong {
+  font-size: 15px;
+}
+
+.timeline-time span {
+  color: #777;
+  font-size: 13px;
+}
+
+.timeline-line {
+  position: relative;
+  border-left: 2px solid #ddd;
+}
+
+.timeline-line::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.timeline-content {
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.timeline-content h4 {
+  margin: 6px 0;
+}
+
+.timeline-content span {
+  color: #777;
+  font-size: 14px;
+}
+
+.assignment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assignment-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.assignment-card strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.assignment-card p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.assignment-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  color: #777;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.empty-state {
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: #777;
+}
+
+.dashboard-error {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+@media (max-width: 700px) {
+  .dashboard {
+    padding: 20px;
+  }
+
+  .overview-grid,
+  .task-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .assignment-card {
+    flex-direction: column;
+  }
+
+  .assignment-meta {
+    align-items: flex-start;
+  }
+
+  .timeline-item {
+    grid-template-columns: 65px 16px 1fr;
+    gap: 8px;
+  }
+}
