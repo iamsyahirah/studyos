@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { Link } from 'react-router-dom'
 
 function Login() {
     const navigate = useNavigate()
@@ -45,6 +46,14 @@ function Login() {
                         onChange={(event) => setPassword(event.target.value)}
                         required
                     />
+                </div>
+                <div className="mb-4 text-right">
+                    <Link
+                        to="/forgot-password"
+                        className="text-sm font-medium text-[#526BC6] hover:underline"
+                    >
+                        Forgot password?
+                    </Link>
                 </div>
 
                 <button type="submit">Login</button>
