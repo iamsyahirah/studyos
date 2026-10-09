@@ -8,6 +8,8 @@ import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 
+import Settings from './pages/Settings'
+
 import Dashboard from './pages/Dashboard'
 import AcademicYears from './pages/AcademicYears'
 import Timetable from './pages/Timetable'
@@ -42,6 +44,7 @@ function App() {
             <Route path="/assignments" element={<Assignments />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/groups" element={<Groups />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
         </Route>
       </Routes>

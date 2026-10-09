@@ -92,10 +92,10 @@ function DashboardLayout() {
             border-r border-[#E9EDF3]
             bg-[#FAFBFD]
             transition-[width,transform] duration-300
-            w-[250px]
+            w-62.5
             md:relative md:inset-auto md:z-20
             md:h-full md:shrink-0
-            ${sidebarOpen ? 'md:w-[240px]' : 'md:w-[72px]'}
+            ${sidebarOpen ? 'md:w-60' : 'md:w-18'}
             ${mobileOpen
                             ? 'translate-x-0'
                             : '-translate-x-full md:translate-x-0'
@@ -103,7 +103,7 @@ function DashboardLayout() {
           `}
                 >
                     {/* Logo */}
-                    <div className="flex h-[72px] shrink-0 items-center justify-between px-4">
+                    <div className="flex h-18 shrink-0 items-center justify-between px-4">
                         <NavLink
                             to="/dashboard"
                             onClick={closeMobileSidebar}
@@ -120,7 +120,7 @@ function DashboardLayout() {
 
                             <div className={!sidebarOpen ? 'md:hidden' : ''}>
                                 <h1 className="font-['Space_Grotesk',sans-serif] text-[21px] font-bold tracking-[-0.06em]">
-                                    Study<span className="text-[#688DE8]">OS</span>
+                                    Stud<span className="text-[#688DE8]">ORA</span>
                                 </h1>
                                 <p className="text-[10px] text-[#9DA2AF]">
                                     Student workspace
@@ -211,7 +211,7 @@ function DashboardLayout() {
                             onClick={handleLogout}
                             title={!sidebarOpen ? 'Logout' : undefined}
                             className={`
-                mt-1 flex min-h-[40px] w-full items-center gap-3
+                mt-1 flex min-h-10 w-full items-center gap-3
                 rounded-full px-3.5 py-2
                 text-left text-[13px] font-medium text-[#757A87]
                 transition-colors hover:bg-[#FBE9ED]
@@ -264,7 +264,7 @@ function DashboardLayout() {
                     {/* Header */}
                     <header
                         className="
-              sticky top-0 z-30 flex h-[72px] shrink-0
+              sticky top-0 z-30 flex h-18 shrink-0
               items-center justify-between gap-3
               border-b border-[#EFF1F5]
               bg-white/95 px-4 backdrop-blur-xl
@@ -298,7 +298,7 @@ function DashboardLayout() {
 
                             <div className="min-w-0">
                                 <p className="text-[10px] uppercase tracking-[0.14em] text-[#A4A7B2]">
-                                    StudyOS
+                                    StudORA
                                 </p>
 
                                 <h2 className="truncate font-['Space_Grotesk',sans-serif] text-[15px] font-semibold">
@@ -327,7 +327,7 @@ function DashboardLayout() {
               md:min-h-0 md:overflow-y-auto
             "
                     >
-                        <div className="mx-auto w-full max-w-[1500px]">
+                        <div className="mx-auto w-full max-w-375">
                             <Outlet />
                         </div>
                     </main>

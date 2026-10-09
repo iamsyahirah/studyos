@@ -74,7 +74,7 @@ function SectionHeader({ icon: Icon, title, count, to }) {
 
 function EmptyState({ icon: Icon, title, description }) {
     return (
-        <div className="flex min-h-[175px] flex-col items-center justify-center px-5 py-8 text-center">
+        <div className="flex min-h-43.75 flex-col items-center justify-center px-5 py-8 text-center">
             <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F1F3FA] text-[#6975CE]">
                 <Icon size={22} />
             </div>
@@ -83,7 +83,7 @@ function EmptyState({ icon: Icon, title, description }) {
                 {title}
             </p>
 
-            <p className="mt-1 max-w-[240px] text-xs leading-5 text-[#9194A0]">
+            <p className="mt-1 max-w-60 text-xs leading-5 text-[#9194A0]">
                 {description}
             </p>
         </div>
@@ -147,7 +147,7 @@ function CourseCard({ course, index }) {
         <NavLink
             to="/courses"
             className={`
-        group relative flex min-h-[220px] flex-col
+        group relative flex min-h-55 flex-col
         overflow-hidden rounded-[22px] p-5
         transition-transform duration-200
         hover:-translate-y-1
@@ -165,7 +165,7 @@ function CourseCard({ course, index }) {
 
             <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -bottom-24 left-8 h-44 w-44 rounded-full border-[25px] border-white/10"
+                className="pointer-events-none absolute -bottom-24 left-8 h-44 w-44 rounded-full border-25 border-white/10"
             />
 
             <div className="relative z-10 flex items-start justify-between">
@@ -211,6 +211,11 @@ function CourseCard({ course, index }) {
 
 function Dashboard() {
     const { user } = useAuth()
+
+    const displayName =
+        user?.user_metadata?.display_name ||
+        user?.email?.split('@')[0] ||
+        'Student'
 
     const [courses, setCourses] = useState([])
     const [assignments, setAssignments] = useState([])
@@ -336,11 +341,6 @@ function Dashboard() {
                 ? 'Good afternoon'
                 : 'Good evening'
 
-    const studentName =
-        user?.user_metadata?.full_name ||
-        user?.email?.split('@')[0] ||
-        'Student'
-
     function getClassStatus(startTime, endTime) {
         const now = new Date()
 
@@ -427,7 +427,7 @@ function Dashboard() {
     }
 
     return (
-        <div className="mx-auto max-w-[1500px] space-y-4 pb-5">
+        <div className="mx-auto max-w-375 space-y-4 pb-5">
 
             {/* ====================================
           Greeting
@@ -436,19 +436,19 @@ function Dashboard() {
             <section className="flex flex-wrap items-center justify-between gap-4 px-1 py-2">
                 <div>
                     <p className="mb-1 text-[13px] text-[#858895]">
-                        Welcome back
+                        Welcome back to StudORA!
                     </p>
 
                     <h1
                         className="
               font-['Space_Grotesk',sans-serif]
               text-[28px] font-semibold
-              leading-tight tracking-[-0.05em]
+              leading-tight tracking-tighter
               text-[#202027]
               sm:text-[35px]
             "
                     >
-                        {greeting}, {studentName}.
+                        {greeting}, {displayName}.
                     </h1>
 
                     <p className="mt-2 flex items-center gap-2 text-[12px] text-[#898C99]">
@@ -921,7 +921,7 @@ function Dashboard() {
 
             {/* Footer */}
             <footer className="flex flex-wrap items-center justify-between gap-2 px-2 py-3 text-[11px] text-[#9B9EAA]">
-                <span>StudyOS — Your learning workspace</span>
+                <span>StudORA — Your learning workspace</span>
 
                 <span className="flex items-center gap-1.5">
                     <Sparkles size={13} />
