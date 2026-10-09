@@ -8,13 +8,23 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        async function getSession() {
-            const {
-                data: { session },
-            } = await supabase.auth.getSession()
 
-            setUser(session?.user ?? null)
-            setLoading(false)
+        async function getSession() {
+            try {
+                const {
+                    data: { session },
+                    error,
+                } = await supabase.auth.getSession()
+
+                if (error) throw error
+
+                setUser(session?.user ?? null)
+            } catch (error) {
+                console.error('Failed to get session:', error.message)
+                setUser(null)
+            } finally {
+                setLoading(false)
+            }
         }
 
         getSession()
